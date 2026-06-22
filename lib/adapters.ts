@@ -72,7 +72,7 @@ export function toPlayer(d: Dossier, rank = 0): Player {
     form: d.form.recent.filter((r): r is "W" | "L" => r === "W" || r === "L"),
     walWon: Math.round(frostToWal(d.pnl)),
     hitRate: decided > 0 ? Math.round((won / decided) * 100) : 0,
-    calls: won + lost + voided,
+    calls: won + lost + voided + d.openCalls.length, // total made, incl. still-open
   };
 }
 

@@ -55,6 +55,7 @@ export default function TouchlinePage() {
   const featured = g.featured;
   const matchday = g.matchday;
   const openCall = g.openCall;
+  const openCalls = g.openCalls;
   const justSettled = g.settledCalls[0];
   const handle = session.handle || me.handle;
   const balance = session.balance;
@@ -231,35 +232,35 @@ export default function TouchlinePage() {
             </div>
           </div>
 
-          {openCall && (<>
-          {/* OPEN CALL */}
+          {openCalls.length > 0 && (<>
+          {/* OPEN CALLS */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "26px 0 14px" }}>
-            <div className="cd" style={{ fontSize: 20 }}>Your open call</div>
-            <Link href="/wallet" style={{ fontSize: 13, fontWeight: 700, color: "#0BA14A", textDecoration: "none" }}>See all</Link>
+            <div className="cd" style={{ fontSize: 20 }}>Your open call{openCalls.length > 1 ? "s" : ""}</div>
+            <Link href="/matchday" style={{ fontSize: 13, fontWeight: 700, color: "#0BA14A", textDecoration: "none" }}>See all</Link>
           </div>
-          <div className="card" style={{ padding: "18px 22px", display: "flex", alignItems: "center", gap: 20 }}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <img src={flag(openCall.home.code)} style={{ width: 42, height: 42, borderRadius: "50%", objectFit: "cover", boxShadow: "0 0 0 2px #fff" }} alt="" />
-              <img src={flag(openCall.away.code)} style={{ width: 42, height: 42, borderRadius: "50%", objectFit: "cover", boxShadow: "0 0 0 2px #fff", marginLeft: -12 }} alt="" />
-            </div>
-            <div style={{ flex: 1 }}>
-              <div className="cd" style={{ fontWeight: 600, fontSize: 16 }}>{openCall.home.name} v {openCall.away.name}</div>
-              <div style={{ fontSize: 12.5, fontWeight: 600, color: "#8A988F", marginTop: 2 }}>
-                Your call: <span style={{ color: "#0BA14A", fontWeight: 700 }}>{openCall.pick}</span>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {openCalls.map((oc) => (
+              <div key={oc.matchId} className="card" style={{ padding: "16px 20px", display: "flex", alignItems: "center", gap: 18 }}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <img src={flag(oc.home.code)} style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover", boxShadow: "0 0 0 2px #fff" }} alt="" />
+                  <img src={flag(oc.away.code)} style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover", boxShadow: "0 0 0 2px #fff", marginLeft: -12 }} alt="" />
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div className="cd" style={{ fontWeight: 600, fontSize: 15.5 }}>{oc.home.name} v {oc.away.name}</div>
+                  <div style={{ fontSize: 12.5, fontWeight: 600, color: "#8A988F", marginTop: 2 }}>
+                    Your call: <span style={{ color: "#0BA14A", fontWeight: 700 }}>{oc.pick}</span>
+                  </div>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".6px", color: "#8A988F" }}>STAKED</div>
+                  <div className="mono" style={{ fontWeight: 700, fontSize: 15, marginTop: 3 }}>{oc.staked.toFixed(1)}</div>
+                </div>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, color: "#2F6BFF", background: "#E6EDFF", padding: "8px 13px", borderRadius: 20 }}>
+                  <LockSimple size={13} weight="fill" />
+                  {oc.lock}
+                </span>
               </div>
-            </div>
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".6px", color: "#8A988F" }}>STAKED</div>
-              <div className="mono" style={{ fontWeight: 700, fontSize: 15, marginTop: 3 }}>{openCall.staked.toFixed(1)}</div>
-            </div>
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".6px", color: "#8A988F" }}>PROJECTED</div>
-              <div className="mono" style={{ fontWeight: 700, fontSize: 15, color: "#0BA14A", marginTop: 3 }}>~{openCall.projected}</div>
-            </div>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, color: "#2F6BFF", background: "#E6EDFF", padding: "8px 13px", borderRadius: 20 }}>
-              <LockSimple size={13} weight="fill" />
-              {openCall.lock}
-            </span>
+            ))}
           </div>
           </>)}
 

@@ -31,13 +31,22 @@ export function useGameData() {
   const me = meQ.data ? toPlayer(meQ.data, myRank) : null;
   const ladder = toLadder(ladderQ.data ?? [], myWallet);
 
-  const firstCall = meQ.data?.openCalls?.[0];
-  const callMatch = firstCall ? matches.find((m) => m.fixture.matchId === firstCall.matchId) : undefined;
-  const openCall = firstCall ? toOpenCall(firstCall, callMatch) : null;
+  const rawOpen = meQ.data?.openCalls ?? [];
+  const openCalls = rawOpen.map((c) => ({
+    matchId: c.matchId,
+    ...toOpenCall(c, matches.find((m) => m.fixture.matchId === c.matchId)),
+  }));
+  const openCall = openCalls[0] ?? null;
 
   const settledCalls = (settledQ.data ?? []).map((c) =>
     toSettledCall(c, matches.find((m) => m.fixture.matchId === c.matchId)),
   );
+
+  // Every match you have a stake in (open or settled) — for marking the Matchday.
+  const calledMatchIds = new Set<string>([
+    ...rawOpen.map((c) => c.matchId),
+    ...(settledQ.data ?? []).map((c) => c.matchId),
+  ]);
 
   return {
     loading: matchesQ.isLoading,
@@ -54,6 +63,8 @@ export function useGameData() {
     podium: ladder.slice(0, 3),
     managersPot: Math.round(frostToWal(potQ.data ?? 0n)),
     openCall,
+    openCalls,
     settledCalls,
+    calledMatchIds,
   };
 }
