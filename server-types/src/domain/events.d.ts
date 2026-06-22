@@ -21,6 +21,7 @@ export interface Deposited {
 export interface Withdrawn {
     type: "Withdrawn";
     amount: Frost;
+    fee?: Frost;
     custodyRef?: string;
 }
 /** One-time starter bonus — spendable on calls, NOT withdrawable. */

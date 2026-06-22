@@ -10,6 +10,8 @@ export interface GameConfig {
     minStake: Frost;
     namespacePrefix: string;
     welcomeGrant: Frost;
+    withdrawFeeBps: number;
+    withdrawFeeMin: Frost;
 }
 export interface AppConfig {
     port: number;

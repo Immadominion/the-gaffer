@@ -19,6 +19,7 @@ export declare const appRouter: import("@trpc/server").TRPCBuiltRouter<{
             wiring: Record<string, string>;
             sessionsWallet: string;
             managersPot: bigint;
+            houseRevenue: bigint;
         };
         meta: object;
     }>;
@@ -154,6 +155,8 @@ export declare const appRouter: import("@trpc/server").TRPCBuiltRouter<{
         output: {
             balance: import("../domain/ids").Frost;
             ref: string;
+            net: import("../domain/ids").Frost;
+            fee: import("../domain/ids").Frost;
         };
         meta: object;
     }>;

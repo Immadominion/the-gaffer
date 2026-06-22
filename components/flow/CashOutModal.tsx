@@ -13,6 +13,9 @@ export default function CashOutModal({ open, onClose }: { open: boolean; onClose
   const [amount, setAmount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const max = session.withdrawable; // bonus is not cashable
+  // Mirrors the backend fee (max(2%, 0.05 WAL)) so you see the net before cashing out.
+  const fee = amount > 0 ? Math.max((amount * 200) / 10000, 0.05) : 0;
+  const net = Math.max(0, amount - fee);
 
   const confirm = async () => {
     if (amount <= 0) {
@@ -51,6 +54,12 @@ export default function CashOutModal({ open, onClose }: { open: boolean; onClose
           </div>
           <div className="mono" style={{ fontSize: 12, color: "#8A988F", marginTop: 4 }}>≈ {price !== null ? `$${(amount * price).toFixed(2)}` : "—"}</div>
         </div>
+        {amount > 0 && (
+          <div style={{ fontSize: 12, color: "#6E7C72", fontWeight: 600, textAlign: "center", marginTop: 10 }}>
+            You receive <span className="mono" style={{ fontWeight: 700, color: "#0A7E40" }}>{net.toFixed(2)} WAL</span>
+            <span style={{ color: "#A6B2A9" }}> · {fee.toFixed(2)} WAL network fee</span>
+          </div>
+        )}
 
         <button onClick={() => setAmount(max)} style={{ marginTop: 12, width: "100%", background: "#F3F6F1", border: "none", borderRadius: 11, padding: "10px 0", fontWeight: 700, fontSize: 13, color: "#10231A", cursor: "pointer" }}>
           Max · {max.toFixed(1)} WAL

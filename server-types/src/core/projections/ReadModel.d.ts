@@ -31,10 +31,12 @@ export declare class ReadModel {
     readonly settled: SettledCallsProjection;
     private readonly projections;
     private managersPot;
+    private houseRevenue;
     apply(event: StoredEvent): void;
     /** Replay the whole log, then subscribe to the live tail. */
     hydrate(store: EventStore): Promise<void>;
     managersPotTotal(): Frost;
+    houseRevenueTotal(): Frost;
     /** The Squad Ladder — by GR (skill). This is the canonical ranking. */
     leaderboardByGr(limit?: number): LeaderboardEntry[];
     /** The Winnings board — by realised P&L (money). Never drives rank. */

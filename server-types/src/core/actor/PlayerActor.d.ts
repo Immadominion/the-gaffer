@@ -44,6 +44,8 @@ export declare class PlayerActor {
     withdraw(amount: Frost): Promise<{
         balance: Frost;
         ref: string;
+        net: Frost;
+        fee: Frost;
     }>;
     /** One-time, non-withdrawable starter bonus. Idempotent per stream. */
     claimWelcomeGrant(amount: Frost): Promise<{

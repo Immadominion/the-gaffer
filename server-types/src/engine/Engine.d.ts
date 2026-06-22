@@ -39,6 +39,8 @@ export declare class Engine {
     withdraw(wallet: Wallet, amount: Frost): Promise<{
         balance: Frost;
         ref: string;
+        net: Frost;
+        fee: Frost;
     }>;
     claimWelcomeGrant(wallet: Wallet): Promise<{
         bonus: Frost;
