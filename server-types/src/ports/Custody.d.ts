@@ -33,12 +33,16 @@ export declare class PlayLedgerCustody implements Custody {
     confirmDeposit(_wallet: Wallet, _amount: Frost, _proof?: string): Promise<CustodyRef>;
     withdraw(_wallet: Wallet, _amount: Frost): Promise<CustodyRef>;
 }
+/** Derive the Sui network label from an RPC URL (required by the v2 client options). */
+export declare function networkOf(url: string): "mainnet" | "testnet" | "devnet" | "localnet";
 export interface SuiCustodyConfig {
     rpcUrl: string;
     sessionsAddress: string;
     sessionsKey: string;
     walCoinType: string;
 }
+/** Pull the address out of a Sui balanceChange owner, lower-cased, if it has one. */
+export declare function ownerAddress(owner: unknown): string | undefined;
 /**
  * Real-WAL custody via Sui. The Sessions wallet is the escrow/resolver: deposits
  * are verified against the chain, payouts are signed locally. Everything in/out

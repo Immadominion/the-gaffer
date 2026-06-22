@@ -20,6 +20,7 @@ export declare const appRouter: import("@trpc/server").TRPCBuiltRouter<{
             sessionsWallet: string;
             managersPot: bigint;
             houseRevenue: bigint;
+            ledgerOnWalrus: number;
         };
         meta: object;
     }>;

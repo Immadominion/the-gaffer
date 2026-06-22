@@ -7,7 +7,7 @@
  * before a bet, after a result, and whenever the Gaffer speaks. On Walrus this
  * is MemWal; in tests it is a local keyword index. Same contract either way.
  */
-export type MemoryKind = "call" | "result" | "hot_take" | "trait" | "milestone" | "verdict";
+export type MemoryKind = "call" | "result" | "hot_take" | "trait" | "milestone" | "verdict" | "ledger";
 export interface MemoryRecord {
     text: string;
     kind: MemoryKind;

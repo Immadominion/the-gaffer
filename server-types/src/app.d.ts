@@ -10,6 +10,7 @@ import type { MemoryStore } from "./core/memory/MemoryStore";
 import { ReadModel } from "./core/projections/ReadModel";
 import { Engine } from "./engine/Engine";
 import { MemoryWriter } from "./engine/MemoryWriter";
+import { WalrusLedgerMirror } from "./engine/WalrusLedgerMirror";
 import type { Gaffer } from "./gaffer/Gaffer";
 import { type Custody } from "./ports/Custody";
 import type { Auth } from "./auth/Auth";
@@ -23,6 +24,7 @@ export interface App {
     auth: Auth;
     memory: MemoryStore;
     memoryWriter: MemoryWriter;
+    ledgerMirror: WalrusLedgerMirror;
     matchData: MatchDataProvider;
     /** Description of which adapters are live — handy for /health and the demo. */
     wiring: Record<string, string>;

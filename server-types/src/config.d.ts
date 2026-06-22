@@ -61,6 +61,10 @@ export interface AppConfig {
         sessionsAddress?: string;
         sessionsKey?: string;
         walCoinType?: string;
+        /** Opt in to Privy MPC custody (no env-var key) instead of the raw keypair. */
+        privyCustody?: boolean;
+        /** external_id of the Sessions Privy wallet (default "gaffer_sessions"). */
+        sessionsExternalId?: string;
     };
     /** Auth / embedded wallets (Privy). Verified server-side; users never see crypto. */
     privy?: {
