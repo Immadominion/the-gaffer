@@ -51,8 +51,15 @@ export default function GafferChatPage() {
     try {
       const reply = await chatM.mutateAsync({ message: text });
       setMessages((m) => [...m, { from: "gaffer", text: reply }]);
-    } catch {
-      setMessages((m) => [...m, { from: "gaffer", text: "Can't get to you right now — give me a second and try again." }]);
+    } catch (err) {
+      // Surface the Gaffer's own "needs a breather" line on a rate-limit (429);
+      // fall back to a generic note for network/other errors.
+      const code = (err as { data?: { code?: string } })?.data?.code;
+      const fallback =
+        code === "TOO_MANY_REQUESTS" && err instanceof Error
+          ? err.message
+          : "Can't get to you right now — give me a second and try again.";
+      setMessages((m) => [...m, { from: "gaffer", text: fallback }]);
     }
   };
 
