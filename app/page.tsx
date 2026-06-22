@@ -2,10 +2,23 @@ import Link from "next/link";
 import Image from "next/image";
 import Gaffer3D from "@/components/Gaffer3D";
 import { ArrowRight, Brain, CheckCircle, Coins, PlayCircle, TrendUp, Trophy } from "@/components/icons";
+import { serverTrpc } from "@/lib/serverTrpc";
+import { frostToWal } from "@/lib/format";
 
 /* eslint-disable @next/next/no-img-element */
 
-export default function LandingPage() {
+export const revalidate = 60; // refresh the live hero stats ~1/min
+
+export default async function LandingPage() {
+  let potLabel = "—";
+  let fixturesLabel = "—";
+  try {
+    const [pot, matches] = await Promise.all([serverTrpc.managersPot.query(), serverTrpc.matchday.query()]);
+    potLabel = Math.round(frostToWal(pot)).toLocaleString();
+    fixturesLabel = matches.filter((m) => m.status === "OPEN").length.toLocaleString();
+  } catch {
+    /* backend unreachable — keep the dash */
+  }
   return (
     <div style={{ width: "100%", background: "#fff", overflow: "hidden", color: "#10231A" }}>
       {/* NAV */}
@@ -62,9 +75,9 @@ export default function LandingPage() {
             </Link>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 28, marginTop: 36 }}>
-            <HeroStat value="84,200" label="WAL in the Pot" />
+            <HeroStat value={potLabel} label="WAL in the Pot" />
             <HeroDivider />
-            <HeroStat value="12,400" label="calls made" />
+            <HeroStat value={fixturesLabel} label="fixtures live" />
             <HeroDivider />
             <HeroStat value="100%" label="on Walrus" />
           </div>
