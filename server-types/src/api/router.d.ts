@@ -149,6 +149,24 @@ export declare const appRouter: import("@trpc/server").TRPCBuiltRouter<{
         };
         meta: object;
     }>;
+    /** The player's deposit address (their own Privy Sui wallet) — send WAL here. */
+    depositAddress: import("@trpc/server").TRPCQueryProcedure<{
+        input: void;
+        output: {
+            address: import("../domain/ids").Wallet;
+            available: boolean;
+        };
+        meta: object;
+    }>;
+    /** Sweep + credit any WAL that has arrived at the deposit address. Idempotent. */
+    syncDeposit: import("@trpc/server").TRPCMutationProcedure<{
+        input: void;
+        output: {
+            credited: import("../domain/ids").Frost;
+            balance: import("../domain/ids").Frost;
+        };
+        meta: object;
+    }>;
     claimWelcomeGrant: import("@trpc/server").TRPCMutationProcedure<{
         input: void;
         output: {

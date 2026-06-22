@@ -8,6 +8,9 @@ import type { Wallet } from "../domain/ids";
 export interface Context {
     app: App;
     wallet?: Wallet;
+    /** The player's Privy wallet handle (when provider-custodied) — for deposit sweeps. */
+    privyWalletId?: string;
+    privyPublicKey?: string;
 }
 /**
  * Build a request context: verify the credential via the app's Auth port and, if
@@ -24,6 +27,8 @@ export declare const router: import("@trpc/server").TRPCRouterBuilder<{
 export declare const publicProcedure: import("@trpc/server").TRPCProcedureBuilder<Context, object, object, import("@trpc/server").TRPCUnsetMarker, import("@trpc/server").TRPCUnsetMarker, import("@trpc/server").TRPCUnsetMarker, import("@trpc/server").TRPCUnsetMarker, false>;
 export declare const authedProcedure: import("@trpc/server").TRPCProcedureBuilder<Context, object, {
     wallet: Wallet;
+    privyWalletId: string | undefined;
+    privyPublicKey: string | undefined;
     app: App;
 }, import("@trpc/server").TRPCUnsetMarker, import("@trpc/server").TRPCUnsetMarker, import("@trpc/server").TRPCUnsetMarker, import("@trpc/server").TRPCUnsetMarker, false>;
 /** Run an engine command, translating DomainError into the right tRPC code. */

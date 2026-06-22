@@ -14,6 +14,7 @@ import { ActorRegistry } from "../core/actor/ActorRegistry";
 import type { EventStore } from "../core/eventstore/EventStore";
 import type { ReadModel } from "../core/projections/ReadModel";
 import type { Custody } from "../ports/Custody";
+import type { DepositGateway, PrivyPlayer } from "../ports/PrivyDepositGateway";
 import type { MatchDataProvider } from "../ports/MatchData";
 import type { MakeCallInput } from "../core/actor/PlayerActor";
 export interface EngineDeps {
@@ -23,6 +24,8 @@ export interface EngineDeps {
     gaffer: Gaffer;
     matchData: MatchDataProvider;
     config: GameConfig;
+    /** Custodial deposit sweeps (Privy). Absent → play-money/no on-chain deposits. */
+    depositGateway?: DepositGateway;
 }
 export declare class Engine {
     private readonly deps;
@@ -39,6 +42,16 @@ export declare class Engine {
         wallet: Wallet;
     }>;
     deposit(wallet: Wallet, amount: Frost, proof?: string): Promise<{
+        balance: Frost;
+    }>;
+    /**
+     * Custodial deposit: sweep any WAL that has arrived in the player's Privy wallet
+     * into the Sessions float and credit their ledger. Idempotent + reconciled — safe
+     * to call repeatedly (a "check for my deposit" button). No-op without a gateway,
+     * for an unsigned player, or for a player without a Privy wallet.
+     */
+    syncDeposits(wallet: Wallet, player?: Partial<PrivyPlayer>): Promise<{
+        credited: Frost;
         balance: Frost;
     }>;
     withdraw(wallet: Wallet, amount: Frost): Promise<{

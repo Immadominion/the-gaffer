@@ -10,6 +10,10 @@ import type { Wallet } from "../domain/ids";
 export interface AuthedUser {
     userId: string;
     wallet: Wallet;
+    /** The player's Privy wallet handle, when the provider custodies it — needed to
+     *  sweep an inbound deposit out of the player's wallet into the Sessions float. */
+    privyWalletId?: string;
+    privyPublicKey?: string;
 }
 export interface Auth {
     verify(token: string): Promise<AuthedUser | null>;

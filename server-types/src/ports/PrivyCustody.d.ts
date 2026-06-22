@@ -11,8 +11,22 @@
  * public key derives its address, and rawSign over the Sui intent digest yields a
  * signature that verifies under that pubkey.
  */
+import { Ed25519PublicKey } from "@mysten/sui/keypairs/ed25519";
+import { Signer } from "@mysten/sui/cryptography";
 import type { Frost, Wallet } from "../domain/ids";
 import { type Custody, type CustodyRef } from "./Custody";
+/** A Sui Signer backed by a Privy server wallet — sign() delegates to rawSign. */
+export declare class PrivySuiSigner extends Signer {
+    private readonly wallets;
+    private readonly walletId;
+    private readonly pubkey;
+    constructor(wallets: any, walletId: string, pubkey: Ed25519PublicKey);
+    getKeyScheme(): "ED25519";
+    getPublicKey(): Ed25519PublicKey;
+    sign(bytes: Uint8Array): Promise<Uint8Array<ArrayBuffer>>;
+}
+/** Build a Sui signer for any Privy wallet from its id + flag-prefixed pubkey hex. */
+export declare function buildPrivySuiSigner(wallets: any, walletId: string, publicKeyHex: string): PrivySuiSigner;
 export interface PrivyCustodyConfig {
     appId: string;
     appSecret: string;

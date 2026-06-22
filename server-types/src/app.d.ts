@@ -13,6 +13,7 @@ import { MemoryWriter } from "./engine/MemoryWriter";
 import { WalrusLedgerMirror } from "./engine/WalrusLedgerMirror";
 import type { Gaffer } from "./gaffer/Gaffer";
 import { type Custody } from "./ports/Custody";
+import { type DepositGateway } from "./ports/PrivyDepositGateway";
 import type { Auth } from "./auth/Auth";
 import { type MatchDataProvider } from "./ports/MatchData";
 export interface App {
@@ -36,6 +37,7 @@ export interface CreateAppOptions {
     gaffer?: Gaffer;
     auth?: Auth;
     custody?: Custody;
+    depositGateway?: DepositGateway;
     matchData?: MatchDataProvider;
     /** Seed the Mock provider's fixtures (ignored if matchData is supplied). */
     now?: number;
