@@ -4,12 +4,12 @@ import { useState } from "react";
 import Modal from "@/components/ui/Modal";
 import { ArrowUp, ShieldCheck } from "@/components/icons";
 import { useSession } from "@/lib/session";
-
-const USD_PER_WAL = 1.3;
+import { useWalPrice } from "@/lib/useWalPrice";
 
 /** "Cash out" — no-crypto withdraw. Live: trpc.withdraw.mutate({ amount }). */
 export default function CashOutModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { session, withdraw, busy } = useSession();
+  const price = useWalPrice();
   const [amount, setAmount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const max = session.withdrawable; // bonus is not cashable
@@ -49,7 +49,7 @@ export default function CashOutModal({ open, onClose }: { open: boolean; onClose
             />
             <span style={{ fontSize: 16, fontWeight: 700, color: "#8A988F" }}>WAL</span>
           </div>
-          <div className="mono" style={{ fontSize: 12, color: "#8A988F", marginTop: 4 }}>≈ ${(amount * USD_PER_WAL).toFixed(2)}</div>
+          <div className="mono" style={{ fontSize: 12, color: "#8A988F", marginTop: 4 }}>≈ {price !== null ? `$${(amount * price).toFixed(2)}` : "—"}</div>
         </div>
 
         <button onClick={() => setAmount(max)} style={{ marginTop: 12, width: "100%", background: "#F3F6F1", border: "none", borderRadius: 11, padding: "10px 0", fontWeight: 700, fontSize: 13, color: "#10231A", cursor: "pointer" }}>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Gaffer3D from "@/components/Gaffer3D";
 import AddFundsModal from "@/components/flow/AddFundsModal";
 import Tour, { type TourStep } from "@/components/tour/Tour";
@@ -34,11 +34,7 @@ const TOUR: TourStep[] = [
   { sel: "[data-tour=form]", title: "Your standing", body: "Rating, form and rank. Win the hard calls and you climb the Squad Ladder." },
 ];
 
-const NOTIFS = [
-  { icon: <ChatCircleDots size={16} weight="fill" color="#0BA14A" />, bg: "#E7F6EC", title: "The Gaffer settled your England call", sub: "You lost 20 WAL · 18 Jun" },
-  { icon: <Fire size={16} weight="fill" color="#C57A12" />, bg: "#FBF0DC", title: "3 fixtures close in the next 2 hours", sub: "Matchday 14" },
-  { icon: <Trophy size={16} weight="fill" color="#0BA14A" />, bg: "#E7F6EC", title: "You climbed to #7 on the Squad Ladder", sub: "▲ 2 places" },
-];
+// Notifications are derived from live data in the component (see `notifs`).
 
 const FALLBACK_ME = {
   handle: "Gaffer", sui: "", seed: "Gaffer", bg: "d9f2e1",
@@ -62,6 +58,30 @@ export default function TouchlinePage() {
   const justSettled = g.settledCalls[0];
   const handle = session.handle || me.handle;
   const balance = session.balance;
+
+  // Real notifications, folded from your live data.
+  const notifs: { icon: ReactNode; bg: string; title: string; sub: string }[] = [];
+  if (justSettled)
+    notifs.push({
+      icon: <ChatCircleDots size={16} weight="fill" color="#0BA14A" />,
+      bg: "#E7F6EC",
+      title: `The Gaffer settled your ${justSettled.home.name} call`,
+      sub: `${justSettled.outcome === "WON" ? "Won" : justSettled.outcome === "LOST" ? "Lost" : "Void"} ${justSettled.pnl} WAL · ${justSettled.when}`,
+    });
+  if (openCall)
+    notifs.push({
+      icon: <LockSimple size={16} weight="fill" color="#2F6BFF" />,
+      bg: "#E6EDFF",
+      title: `Your ${openCall.pick} call is live`,
+      sub: `Locks in ${openCall.lock}`,
+    });
+  if (me.rank)
+    notifs.push({
+      icon: <Trophy size={16} weight="fill" color="#0BA14A" />,
+      bg: "#E7F6EC",
+      title: `You're #${me.rank} on the Squad Ladder`,
+      sub: me.tier,
+    });
 
   // spotlight tour on first visit after onboarding
   useEffect(() => {
@@ -125,8 +145,11 @@ export default function TouchlinePage() {
                   <span className="cd" style={{ fontSize: 15 }}>Notifications</span>
                   <span style={{ fontSize: 11, fontWeight: 700, color: "#0BA14A", cursor: "pointer" }}>Mark all read</span>
                 </div>
-                {NOTIFS.map((n, i) => (
-                  <div key={i} style={{ display: "flex", gap: 11, padding: "12px 16px", borderBottom: i < NOTIFS.length - 1 ? "1px solid #F3F6F1" : "none" }}>
+                {notifs.length === 0 && (
+                  <div style={{ padding: "18px 16px", textAlign: "center", fontSize: 12.5, color: "#8A988F", fontWeight: 600 }}>You&rsquo;re all caught up.</div>
+                )}
+                {notifs.map((n, i) => (
+                  <div key={i} style={{ display: "flex", gap: 11, padding: "12px 16px", borderBottom: i < notifs.length - 1 ? "1px solid #F3F6F1" : "none" }}>
                     <div style={{ width: 32, height: 32, borderRadius: 10, background: n.bg, display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}>{n.icon}</div>
                     <div>
                       <div style={{ fontSize: 13, fontWeight: 700, lineHeight: 1.3 }}>{n.title}</div>

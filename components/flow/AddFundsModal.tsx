@@ -4,8 +4,8 @@ import { useState } from "react";
 import Modal from "@/components/ui/Modal";
 import { ArrowDown, Bank, CreditCard, ShieldCheck } from "@/components/icons";
 import { useSession } from "@/lib/session";
+import { useWalPrice } from "@/lib/useWalPrice";
 
-const USD_PER_WAL = 1.3;
 const CHIPS = [25, 50, 100, 250];
 
 /** "Add funds" — no-crypto deposit. Live: trpc.deposit.mutate({ amount }). */
@@ -19,6 +19,7 @@ export default function AddFundsModal({
   onDone?: (amount: number) => void;
 }) {
   const { deposit, busy } = useSession();
+  const price = useWalPrice();
   const [amount, setAmount] = useState(50);
   const [method, setMethod] = useState<"card" | "transfer">("card");
   const [error, setError] = useState<string | null>(null);
@@ -60,7 +61,7 @@ export default function AddFundsModal({
             />
             <span style={{ fontSize: 16, fontWeight: 700, color: "#8A988F" }}>WAL</span>
           </div>
-          <div className="mono" style={{ fontSize: 12, color: "#8A988F", marginTop: 4 }}>≈ ${(amount * USD_PER_WAL).toFixed(2)}</div>
+          <div className="mono" style={{ fontSize: 12, color: "#8A988F", marginTop: 4 }}>≈ {price !== null ? `$${(amount * price).toFixed(2)}` : "—"}</div>
         </div>
 
         <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
