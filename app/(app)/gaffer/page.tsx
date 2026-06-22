@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { ArrowUp, Brain, SealCheck } from "@/components/icons";
 import { useTRPC } from "@/lib/trpc";
 import { useGameData } from "@/lib/useGameData";
@@ -16,6 +16,8 @@ export default function GafferChatPage() {
   const me = g.me;
   const d = g.meRaw;
   const chatM = useMutation(trpc.chat.mutationOptions());
+  const historyQ = useQuery(trpc.chatHistory.queryOptions({ limit: 50 }));
+  const seeded = useRef(false);
 
   const [messages, setMessages] = useState<Msg[]>([
     { from: "gaffer", text: "Back again. What's the next call — and don't give me the safe one." },
@@ -26,6 +28,20 @@ export default function GafferChatPage() {
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, chatM.isPending]);
+
+  // Seed the conversation from the persisted transcript, once.
+  useEffect(() => {
+    if (seeded.current || !historyQ.data) return;
+    seeded.current = true;
+    if (historyQ.data.length > 0) {
+      setMessages(
+        historyQ.data.flatMap((e) => [
+          { from: "me" as const, text: e.message },
+          { from: "gaffer" as const, text: e.reply },
+        ]),
+      );
+    }
+  }, [historyQ.data]);
 
   const send = async () => {
     const text = input.trim();

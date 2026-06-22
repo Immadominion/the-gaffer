@@ -8,6 +8,7 @@ import type { Frost, Wallet } from "../../domain/ids";
 import type { Tier } from "../../domain/model";
 import type { FormState } from "../../game/form";
 import type { EventStore } from "../eventstore/EventStore";
+import { ChatProjection } from "./ChatProjection";
 import { DossierProjection, type DossierView } from "./DossierProjection";
 import { PotProjection } from "./PotProjection";
 import { SettledCallsProjection } from "./SettledCallsProjection";
@@ -29,6 +30,7 @@ export declare class ReadModel {
     readonly dossier: DossierProjection;
     readonly pots: PotProjection;
     readonly settled: SettledCallsProjection;
+    readonly chat: ChatProjection;
     private readonly projections;
     private managersPot;
     private houseRevenue;
@@ -43,4 +45,5 @@ export declare class ReadModel {
     leaderboardByPnl(limit?: number): LeaderboardEntry[];
     getDossier(wallet: Wallet): DossierView | undefined;
     settledCalls(wallet: Wallet, limit?: number): import("./SettledCallsProjection").SettledCallView[];
+    chatHistory(wallet: Wallet, limit?: number): import("./ChatProjection").ChatEntry[];
 }

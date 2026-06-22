@@ -32,6 +32,10 @@ export interface MatchView {
     fixture: Fixture;
     status: MarketStatus;
     markets: MarketPotView[];
+    score: {
+        home: number;
+        away: number;
+    } | null;
 }
 export declare class PotProjection implements Projection {
     readonly name = "pots";

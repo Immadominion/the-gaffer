@@ -101,6 +101,13 @@ export declare const appRouter: import("@trpc/server").TRPCBuiltRouter<{
         output: import("../core/projections/SettledCallsProjection").SettledCallView[];
         meta: object;
     }>;
+    chatHistory: import("@trpc/server").TRPCQueryProcedure<{
+        input: {
+            limit?: number | undefined;
+        } | undefined;
+        output: import("../core/projections/ChatProjection").ChatEntry[];
+        meta: object;
+    }>;
     touchline: import("@trpc/server").TRPCQueryProcedure<{
         input: void;
         output: {
@@ -214,7 +221,7 @@ export declare const appRouter: import("@trpc/server").TRPCBuiltRouter<{
     onFeed: import("@trpc/server").TRPCSubscriptionProcedure<{
         input: void;
         output: AsyncIterable<{
-            type: "PlayerSigned" | "Deposited" | "Withdrawn" | "WelcomeGranted" | "CallMade" | "HotTakeDeclared" | "CallSettled" | "CallVoided" | "TierChanged" | "TraitObserved" | "VerdictIssued" | "MatchOpened" | "MatchLocked" | "MatchResolved" | "PotSettled";
+            type: "PlayerSigned" | "Deposited" | "Withdrawn" | "WelcomeGranted" | "CallMade" | "HotTakeDeclared" | "CallSettled" | "CallVoided" | "TierChanged" | "TraitObserved" | "VerdictIssued" | "ChatExchanged" | "MatchOpened" | "MatchLocked" | "MatchResolved" | "PotSettled";
             at: number;
             payload: import("../domain/events").DomainEvent;
         }, void, any>;

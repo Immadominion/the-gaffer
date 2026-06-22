@@ -88,7 +88,13 @@ export interface VerdictIssued {
     trigger: VerdictTrigger;
     quotes: string[];
 }
-export type PlayerEvent = PlayerSigned | Deposited | Withdrawn | WelcomeGranted | CallMade | HotTakeDeclared | CallSettled | CallVoided | TierChanged | TraitObserved | VerdictIssued;
+/** A chat turn with the Gaffer — the transcript is part of the player's memory. */
+export interface ChatExchanged {
+    type: "ChatExchanged";
+    message: string;
+    reply: string;
+}
+export type PlayerEvent = PlayerSigned | Deposited | Withdrawn | WelcomeGranted | CallMade | HotTakeDeclared | CallSettled | CallVoided | TierChanged | TraitObserved | VerdictIssued | ChatExchanged;
 export interface MatchOpened {
     type: "MatchOpened";
     fixture: Fixture;

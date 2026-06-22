@@ -125,7 +125,9 @@ function Row({ m, called, kind }: { m: MatchView; called: boolean; kind: "open" 
         <img src={flag(flagCode(f.away) ?? "")} style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover", boxShadow: "0 0 0 2px #fff", marginLeft: -12 }} alt="" />
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div className="cd" style={{ fontSize: 16 }}>{f.home} v {f.away}</div>
+        <div className="cd" style={{ fontSize: 16 }}>
+          {f.home} {kind === "played" && m.score ? <span className="mono" style={{ color: "#5B6B62", fontWeight: 700 }}>{m.score.home}–{m.score.away}</span> : "v"} {f.away}
+        </div>
         <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 600, color: "#8A988F", marginTop: 2 }}>
           {kind === "open" && <><Clock size={13} weight="fill" /> {kickoffLabel(f.kickoff).ko} · {f.group ?? f.stage}</>}
           {kind === "live" && <span style={{ color: "#C2373B", fontWeight: 700 }}>● Locked · in play</span>}

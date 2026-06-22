@@ -9,7 +9,7 @@
 
 import { useRef, useState } from "react";
 import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, keepPreviousData } from "@tanstack/react-query";
 import { createTRPCClient, createWSClient, httpBatchLink, splitLink, wsLink } from "@trpc/client";
 import superjson from "superjson";
 import type { AppRouter } from "@server/api/router";
@@ -37,7 +37,14 @@ function TRPCStack({ children }: { children: React.ReactNode }) {
   };
 
   const [queryClient] = useState(
-    () => new QueryClient({ defaultOptions: { queries: { staleTime: 15_000, retry: 1, refetchOnWindowFocus: false } } }),
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          // Longer cache + keep previous data so navigating between screens shows
+          // cached content instantly and refetches quietly in the background.
+          queries: { staleTime: 30_000, retry: 1, refetchOnWindowFocus: false, placeholderData: keepPreviousData },
+        },
+      }),
   );
 
   const [trpcClient] = useState(() =>
