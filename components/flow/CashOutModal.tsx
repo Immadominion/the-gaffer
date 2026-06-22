@@ -1,0 +1,72 @@
+"use client";
+
+import { useState } from "react";
+import Modal from "@/components/ui/Modal";
+import { ArrowUp, ShieldCheck } from "@/components/icons";
+import { useSession } from "@/lib/session";
+
+const USD_PER_WAL = 1.3;
+
+/** "Cash out" — no-crypto withdraw. Live: trpc.withdraw.mutate({ amount }). */
+export default function CashOutModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { session, withdraw, busy } = useSession();
+  const [amount, setAmount] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+  const max = session.withdrawable; // bonus is not cashable
+
+  const confirm = async () => {
+    if (amount <= 0) {
+      onClose();
+      return;
+    }
+    setError(null);
+    try {
+      await withdraw(Math.min(amount, max));
+      onClose();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Withdrawal failed — try again.");
+    }
+  };
+
+  return (
+    <Modal open={open} onClose={onClose} width={420}>
+      <div style={{ padding: 26 }}>
+        <h2 className="cd" style={{ fontSize: 22, margin: "0 0 4px" }}>Cash out</h2>
+        <p style={{ fontSize: 13, color: "#6E7C72", margin: "0 0 18px" }}>
+          Available to withdraw: <span className="mono" style={{ fontWeight: 700, color: "#10231A" }}>{max.toFixed(1)} WAL</span>
+        </p>
+
+        <div style={{ background: "#F3F6F1", borderRadius: 16, padding: "20px 16px", textAlign: "center" }}>
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8 }}>
+            <input
+              type="number"
+              value={amount}
+              min={0}
+              max={max}
+              onChange={(e) => setAmount(Math.max(0, Math.min(max, Number(e.target.value))))}
+              className="mono"
+              style={{ width: 130, textAlign: "right", border: "none", background: "transparent", outline: "none", fontSize: 38, fontWeight: 700, color: "#10231A" }}
+            />
+            <span style={{ fontSize: 16, fontWeight: 700, color: "#8A988F" }}>WAL</span>
+          </div>
+          <div className="mono" style={{ fontSize: 12, color: "#8A988F", marginTop: 4 }}>≈ ${(amount * USD_PER_WAL).toFixed(2)}</div>
+        </div>
+
+        <button onClick={() => setAmount(max)} style={{ marginTop: 12, width: "100%", background: "#F3F6F1", border: "none", borderRadius: 11, padding: "10px 0", fontWeight: 700, fontSize: 13, color: "#10231A", cursor: "pointer" }}>
+          Max · {max.toFixed(1)} WAL
+        </button>
+
+        <button onClick={() => void confirm()} disabled={amount <= 0 || busy} className="btnp" style={{ width: "100%", padding: 14, borderRadius: 14, fontSize: 15, marginTop: 14, opacity: amount <= 0 || busy ? 0.5 : 1 }}>
+          <ArrowUp size={16} weight="bold" />
+          {busy ? "Processing…" : `Cash out${amount > 0 ? ` ${amount} WAL` : ""}`}
+        </button>
+        {error && <p style={{ fontSize: 12, color: "#C2373B", textAlign: "center", marginTop: 12, fontWeight: 600, lineHeight: 1.4 }}>{error}</p>}
+
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginTop: 14, fontSize: 11.5, fontWeight: 600, color: "#A6B2A9" }}>
+          <ShieldCheck size={14} weight="fill" color="#0BA14A" />
+          Sent from the Sessions wallet to your account
+        </div>
+      </div>
+    </Modal>
+  );
+}

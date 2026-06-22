@@ -1,0 +1,76 @@
+/**
+ * The player actor. One per player, it owns that player's stream and is the only
+ * writer to it. Every command is validated against the current Dossier and, if
+ * it holds, turned into events appended under optimistic concurrency. Commands
+ * run one at a time through the mailbox, so there are no races on a player.
+ *
+ * Settlement instructions (settleCall/voidCall) come from the settlement saga but
+ * still flow through this actor's mailbox, preserving single-writer ordering.
+ */
+import type { GameConfig } from "../../config";
+import { type CallId, type Frost, type MarketId, type MatchId, type Wallet } from "../../domain/ids";
+import type { VerdictTrigger } from "../../domain/model";
+import type { Gaffer, Verdict } from "../../gaffer/Gaffer";
+import type { ReadModel } from "../projections/ReadModel";
+import type { EventStore } from "../eventstore/EventStore";
+import type { Custody } from "../../ports/Custody";
+export interface PlayerActorDeps {
+    store: EventStore;
+    readModel: ReadModel;
+    custody: Custody;
+    gaffer: Gaffer;
+    config: GameConfig;
+}
+export interface MakeCallInput {
+    matchId: MatchId;
+    marketId: MarketId;
+    bucket: string;
+    stake: Frost;
+    note?: string;
+}
+export declare class PlayerActor {
+    private readonly wallet;
+    private readonly deps;
+    private readonly mailbox;
+    private readonly streamId;
+    private version;
+    constructor(wallet: Wallet, deps: PlayerActorDeps);
+    signContract(handle?: string): Promise<{
+        wallet: Wallet;
+    }>;
+    deposit(amount: Frost, proof?: string): Promise<{
+        balance: Frost;
+    }>;
+    withdraw(amount: Frost): Promise<{
+        balance: Frost;
+        ref: string;
+    }>;
+    /** One-time, non-withdrawable starter bonus. Idempotent per stream. */
+    claimWelcomeGrant(amount: Frost): Promise<{
+        bonus: Frost;
+    }>;
+    makeCall(input: MakeCallInput): Promise<{
+        callId: CallId;
+        impliedProbAtCall: number;
+    }>;
+    declareHotTake(text: string): Promise<{
+        takeId: string;
+    }>;
+    requestVerdict(trigger: VerdictTrigger): Promise<Verdict & {
+        verdictId: string;
+    }>;
+    settleCall(callId: CallId, won: boolean, payout: Frost): Promise<void>;
+    voidCall(callId: CallId, reason: string): Promise<void>;
+    observeTrait(trait: {
+        key: string;
+        label: string;
+        confidence: number;
+        evidence: string;
+    }): Promise<void>;
+    /** Has this custody ref (deposit tx digest) already been credited on this stream? */
+    private depositRefSeen;
+    private dossier;
+    private requireSigned;
+    private ensureLoaded;
+    private append;
+}

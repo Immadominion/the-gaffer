@@ -1,0 +1,601 @@
+@import "tailwindcss";
+
+/* ============================================================
+   THE GAFFER — design tokens (football green, from the .dc.html source)
+   ============================================================ */
+@theme {
+  --font-display: "Clash Display", system-ui, sans-serif;
+  --font-sans: "Satoshi", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-green: #0ba14a;
+  --color-green-bright: #14b85a;
+  --color-green-deep: #0a8a41;
+  --color-green-700: #0a7e40;
+  --color-green-900: #06200f;
+  --color-mint: #8fe7b0;
+  --color-mint-soft: #e7f6ec;
+
+  --color-ink: #0e1a14;
+  --color-ink-2: #13251b;
+  --color-ink-soft: #b8c6bd;
+  --color-ink-faint: #7e8c84;
+
+  --color-night: #10231a;
+  --color-slate: #3a4a41;
+  --color-muted: #4a5a50;
+  --color-mute2: #5a6a60;
+  --color-mute3: #6e7c72;
+  --color-fog: #8a988f;
+  --color-fog2: #a6b2a9;
+  --color-mist: #c0cabf;
+  --color-line: #e7ece3;
+  --color-line2: #eef1ec;
+  --color-paper: #f4f7f2;
+  --color-paper2: #f3f6f1;
+  --color-paper3: #f7faf6;
+
+  --color-rust: #c2373b;
+  --color-coral: #e56b6b;
+  --color-danger: #e5484d;
+  --color-amber: #c57a12;
+  --color-gold: #f2b705;
+  --color-blue: #2f6bff;
+
+  --radius-card: 20px;
+  --radius-ink: 22px;
+
+  --shadow-card: 0 2px 12px rgba(16, 35, 26, 0.05);
+  --shadow-soft: 0 2px 8px rgba(16, 35, 26, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: #f4f7f2;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  color: #10231a;
+}
+
+/* ============================================================
+   Typography / surface helpers (1:1 with the design source)
+   ============================================================ */
+.cd {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+.mono {
+  font-family: var(--font-mono);
+}
+.lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: #8a988f;
+}
+.card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 12px rgba(16, 35, 26, 0.05);
+}
+.ink {
+  background: linear-gradient(160deg, #0e1a14, #13251b);
+  color: #fff;
+  border-radius: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.btnp {
+  background: linear-gradient(135deg, #14b85a, #0a8a41);
+  color: #fff;
+  border: none;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+.btnp:hover {
+  filter: brightness(1.05);
+}
+.btnp:active {
+  transform: translateY(1px);
+}
+
+/* ============================================================
+   APP SHELL — full-bleed (not a floating card)
+   Desktop: left rail · content · right squad rail, edge to edge.
+   Mobile:  content + floating bottom nav.
+   ============================================================ */
+.app {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #f4f7f2;
+}
+
+/* left icon rail — sticky, full height */
+.lrail {
+  width: 84px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 0;
+  border-right: 1px solid #e7ece3;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  align-self: flex-start;
+  background: #f4f7f2;
+}
+.logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+.railbtn {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8a988f;
+  font-size: 22px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: 0.15s;
+}
+.railbtn:hover {
+  background: #eef2eb;
+  color: #10231a;
+}
+.railon {
+  background: #0ba14a !important;
+  color: #fff !important;
+}
+
+/* main content column */
+.appmain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.midpad {
+  padding: 26px 30px 30px;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+/* right squad rail — sticky, full height */
+.arail {
+  width: 88px;
+  flex: none;
+  border-left: 1px solid #e7ece3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 0;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  align-self: flex-start;
+  background: #f4f7f2;
+}
+.ava {
+  position: relative;
+  cursor: pointer;
+}
+.ava img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: block;
+  box-shadow: 0 0 0 2px #fff;
+}
+.dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2.5px #f4f7f2;
+}
+.back {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(16, 35, 26, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 17px;
+  color: #10231a;
+}
+
+/* ============================================================
+   Mobile bottom nav (the floating dark pill)
+   ============================================================ */
+.bottomnav {
+  display: none;
+}
+.navbtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 54px;
+  height: 36px;
+  border-radius: 13px;
+  color: #7e8c84;
+}
+.navon {
+  background: #14b85a;
+  color: #06200f;
+}
+
+/* ============================================================
+   Responsive layout primitives (used in place of inline flex/grid
+   so they can actually reflow at breakpoints)
+   ============================================================ */
+.row {
+  display: flex;
+  gap: 24px;
+}
+.row-26 {
+  gap: 26px;
+}
+.col-main {
+  flex: 1;
+  min-width: 0;
+}
+.col-side {
+  flex: none;
+}
+.w300 { width: 300px; }
+.w320 { width: 320px; }
+.w340 { width: 340px; }
+.w360 { width: 360px; }
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+/* chat is a fixed-height two-pane on desktop */
+.chatwrap {
+  display: flex;
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* landing grids */
+.lp-hero {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 40px;
+  align-items: center;
+}
+.lp-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.lp-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.lp-h1 {
+  font-size: clamp(40px, 7vw, 62px);
+}
+.lp-h2 {
+  font-size: clamp(30px, 5vw, 46px);
+}
+.lp-herovis {
+  width: 100%;
+  max-width: 560px;
+  height: 600px;
+}
+
+/* sign-in / contract — desktop: content left, giant Gaffer grounded on the right */
+.signin {
+  min-height: 100dvh;
+  display: flex;
+  align-items: stretch;
+  background: #f4f7f2;
+}
+.signin-left {
+  flex: 1.05;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 56px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.signin-right {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+}
+.signin-gaffer {
+  width: min(680px, 50vw);
+  height: 92vh;
+}
+@media (max-width: 900px) {
+  .signin {
+    flex-direction: column-reverse;
+  }
+  .signin-left {
+    max-width: 480px;
+    padding: 8px 20px 36px;
+    flex: none;
+  }
+  .signin-right {
+    flex: none;
+    height: 320px;
+  }
+  .signin-gaffer {
+    width: 320px;
+    height: 320px;
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes tour-bounce {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-5px, -5px);
+  }
+}
+@keyframes tour-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(20, 184, 90, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 14px rgba(20, 184, 90, 0);
+  }
+}
+@keyframes popin {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* gaffer 3d idle float */
+@keyframes gaffer-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.gaffer-float {
+  animation: gaffer-float 5s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gaffer-float {
+    animation: none;
+  }
+}
+
+model-viewer {
+  width: 100%;
+  height: 100%;
+  --poster-color: transparent;
+  background: transparent;
+}
+
+.scroll-soft::-webkit-scrollbar {
+  width: 8px;
+}
+.scroll-soft::-webkit-scrollbar-thumb {
+  background: #d8e0d4;
+  border-radius: 8px;
+}
+
+/* ============================================================
+   BREAKPOINTS
+   ============================================================ */
+/* hide the right squad rail when space gets tight */
+@media (max-width: 1180px) {
+  .arail {
+    display: none;
+  }
+}
+
+/* tablet → single column bodies */
+@media (max-width: 980px) {
+  .row {
+    flex-direction: column;
+  }
+  .col-side,
+  .w300,
+  .w320,
+  .w340,
+  .w360 {
+    width: 100%;
+  }
+  .grid3 {
+    grid-template-columns: 1fr;
+  }
+  .lp-hero,
+  .lp-2 {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .lp-3 {
+    grid-template-columns: 1fr;
+  }
+  .lp-navlinks {
+    display: none !important;
+  }
+}
+
+/* podium reflow (Squad Ladder) */
+.podium {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 24px;
+}
+@media (max-width: 520px) {
+  .podium {
+    gap: 8px;
+  }
+}
+
+/* mobile → bottom nav, no side rails */
+@media (max-width: 820px) {
+  .lrail {
+    display: none;
+  }
+  .appmain {
+    padding-bottom: 96px;
+  }
+  .midpad {
+    padding: 16px 16px 24px;
+  }
+  .bottomnav {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    padding: 10px 14px calc(16px + env(safe-area-inset-bottom));
+    background: linear-gradient(to top, #f3f6f1 72%, rgba(243, 246, 241, 0));
+    pointer-events: none;
+  }
+  .bottomnav-inner {
+    pointer-events: auto;
+    max-width: 460px;
+    margin: 0 auto;
+    background: #0e1a14;
+    border-radius: 24px;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 14px 30px rgba(14, 26, 20, 0.28);
+  }
+  .chatwrap {
+    flex-direction: column;
+    height: auto;
+    min-height: calc(100dvh - 96px);
+  }
+  .chatctx {
+    display: none !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .lp-pad {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}
+
+/* ============================================================
+   Verdict — full-screen focus overlay (appears over any screen)
+   ============================================================ */
+.verdict-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: #0e1a14;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+.verdict-card {
+  width: 760px;
+  max-width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px;
+  padding: 36px;
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  position: relative;
+}
+.verdict-gaffer {
+  width: 300px;
+  height: 320px;
+  flex: none;
+}
+@media (max-width: 680px) {
+  .verdict-card {
+    flex-direction: column;
+    gap: 18px;
+    padding: 24px;
+  }
+  .verdict-gaffer {
+    width: 220px;
+    height: 240px;
+  }
+}
+
+/* touchline header: drop the search field on phones */
+@media (max-width: 820px) {
+  .tl-search {
+    display: none !important;
+  }
+}
