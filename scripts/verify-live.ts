@@ -5,7 +5,7 @@
  */
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import superjson from "superjson";
-import type { AppRouter } from "../../src/api/router.ts";
+import type { AppRouter } from "@server/api/router";
 
 const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? "https://gaffer-backend-production-6543.up.railway.app";
 
