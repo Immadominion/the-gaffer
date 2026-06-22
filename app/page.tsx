@@ -67,7 +67,7 @@ export default async function LandingPage() {
               <ArrowRight size={18} weight="bold" />
             </Link>
             <a
-              href="https://youtu.be/dCW31RNfKVU"
+              href="https://youtu.be/uJWIe73eG4w"
               target="_blank"
               rel="noopener noreferrer"
               style={{ background: "#fff", color: "#10231A", border: "1.5px solid #DDE4DA", fontWeight: 700, fontSize: 16, padding: "16px 26px", borderRadius: 14, cursor: "pointer", display: "flex", alignItems: "center", gap: 9, textDecoration: "none" }}
