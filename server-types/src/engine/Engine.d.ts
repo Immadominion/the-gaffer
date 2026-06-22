@@ -9,6 +9,7 @@ import type { GameConfig } from "../config";
 import { type Frost, type MarketId, type MatchId, type Wallet } from "../domain/ids";
 import { type Fixture, type MarketDef, type VerdictTrigger } from "../domain/model";
 import type { Gaffer } from "../gaffer/Gaffer";
+import { HouseLiquidity } from "./HouseLiquidity";
 import { ActorRegistry } from "../core/actor/ActorRegistry";
 import type { EventStore } from "../core/eventstore/EventStore";
 import type { ReadModel } from "../core/projections/ReadModel";
@@ -27,6 +28,10 @@ export declare class Engine {
     private readonly deps;
     readonly registry: ActorRegistry;
     private readonly matchVersions;
+    /** Per-wallet + global throttle on the paid (Anthropic) endpoints. */
+    private readonly limiter;
+    /** Synthetic house bettors that seed each touched match with a counterparty. */
+    readonly house: HouseLiquidity;
     constructor(deps: EngineDeps);
     get readModel(): ReadModel;
     get custody(): Custody;

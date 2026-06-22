@@ -47,6 +47,13 @@ export declare class PlayerActor {
         net: Frost;
         fee: Frost;
     }>;
+    /**
+     * Idempotent house-bot setup: make sure this synthetic bettor is signed and
+     * holds its one-time, float-backed bankroll. Safe to call before every seed —
+     * it appends nothing once the bot is already set up, so it never double-funds
+     * (the cap on house exposure relies on this).
+     */
+    ensureHouseFunded(amount: Frost): Promise<void>;
     /** One-time, non-withdrawable starter bonus. Idempotent per stream. */
     claimWelcomeGrant(amount: Frost): Promise<{
         bonus: Frost;

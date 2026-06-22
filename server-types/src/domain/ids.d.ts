@@ -34,3 +34,6 @@ export declare const newEventId: () => Brand<string, "EventId">;
 export declare const playerStream: (w: Wallet) => string;
 /** Shared game state for a single fixture. */
 export declare const matchStream: (m: MatchId) => string;
+export declare const HOUSE_WALLET_PREFIX = "house:";
+export declare const houseWallet: (i: number) => Wallet;
+export declare const isHouseWallet: (w: Wallet) => boolean;

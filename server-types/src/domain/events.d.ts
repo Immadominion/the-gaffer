@@ -29,6 +29,11 @@ export interface WelcomeGranted {
     type: "WelcomeGranted";
     amount: Frost;
 }
+/** One-time house bankroll for a liquidity bot — float-backed betting capital. */
+export interface HouseSeeded {
+    type: "HouseSeeded";
+    amount: Frost;
+}
 export interface CallMade {
     type: "CallMade";
     callId: CallId;
@@ -94,7 +99,7 @@ export interface ChatExchanged {
     message: string;
     reply: string;
 }
-export type PlayerEvent = PlayerSigned | Deposited | Withdrawn | WelcomeGranted | CallMade | HotTakeDeclared | CallSettled | CallVoided | TierChanged | TraitObserved | VerdictIssued | ChatExchanged;
+export type PlayerEvent = PlayerSigned | Deposited | Withdrawn | WelcomeGranted | HouseSeeded | CallMade | HotTakeDeclared | CallSettled | CallVoided | TierChanged | TraitObserved | VerdictIssued | ChatExchanged;
 export interface MatchOpened {
     type: "MatchOpened";
     fixture: Fixture;

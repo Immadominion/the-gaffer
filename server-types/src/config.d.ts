@@ -4,6 +4,7 @@
  * tests, and the smoke run.
  */
 import type { Frost } from "./domain/ids";
+import type { RateLimitConfig } from "./engine/RateLimiter";
 export interface GameConfig {
     rakeBps: number;
     minParticipants: number;
@@ -12,11 +13,22 @@ export interface GameConfig {
     welcomeGrant: Frost;
     withdrawFeeBps: number;
     withdrawFeeMin: Frost;
+    rateLimits: RateLimitConfig;
+    house: HouseConfig;
+}
+export interface HouseConfig {
+    enabled: boolean;
+    botCount: number;
+    seedStake: Frost;
+    bankrollPerBot: Frost;
+    liquidityCap: Frost;
 }
 export interface AppConfig {
     port: number;
     /** Durable event-log path (SQLite). Unset → in-memory (state lost on restart). */
     eventLogPath?: string;
+    /** Secret that gates the demo "resolve match now" endpoint. Unset → disabled. */
+    demoAdminKey?: string;
     anthropicApiKey?: string;
     /** The Gaffer's voice. Cheapest capable model by default; verdict can upgrade. */
     models: {

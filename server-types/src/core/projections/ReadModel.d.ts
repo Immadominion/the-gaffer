@@ -4,7 +4,7 @@
  * derived views the API serves: dossiers, pots, leaderboards, the Manager's Pot.
  */
 import type { StoredEvent } from "../../domain/events";
-import type { Frost, Wallet } from "../../domain/ids";
+import { type Frost, type Wallet } from "../../domain/ids";
 import type { Tier } from "../../domain/model";
 import type { FormState } from "../../game/form";
 import type { EventStore } from "../eventstore/EventStore";

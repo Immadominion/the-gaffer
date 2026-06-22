@@ -206,6 +206,23 @@ export declare const appRouter: import("@trpc/server").TRPCBuiltRouter<{
         output: string;
         meta: object;
     }>;
+    resolveMatchNow: import("@trpc/server").TRPCMutationProcedure<{
+        input: {
+            key: string;
+            home: number;
+            away: number;
+            matchId: string;
+        };
+        output: {
+            ok: boolean;
+            matchId: string;
+            score: {
+                home: number;
+                away: number;
+            };
+        };
+        meta: object;
+    }>;
     onMatch: import("@trpc/server").TRPCSubscriptionProcedure<{
         input: {
             matchId: string;
@@ -221,7 +238,7 @@ export declare const appRouter: import("@trpc/server").TRPCBuiltRouter<{
     onFeed: import("@trpc/server").TRPCSubscriptionProcedure<{
         input: void;
         output: AsyncIterable<{
-            type: "PlayerSigned" | "Deposited" | "Withdrawn" | "WelcomeGranted" | "CallMade" | "HotTakeDeclared" | "CallSettled" | "CallVoided" | "TierChanged" | "TraitObserved" | "VerdictIssued" | "ChatExchanged" | "MatchOpened" | "MatchLocked" | "MatchResolved" | "PotSettled";
+            type: "PlayerSigned" | "Deposited" | "Withdrawn" | "WelcomeGranted" | "HouseSeeded" | "CallMade" | "HotTakeDeclared" | "CallSettled" | "CallVoided" | "TierChanged" | "TraitObserved" | "VerdictIssued" | "ChatExchanged" | "MatchOpened" | "MatchLocked" | "MatchResolved" | "PotSettled";
             at: number;
             payload: import("../domain/events").DomainEvent;
         }, void, any>;
