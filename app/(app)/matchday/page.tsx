@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, CaretRight, CheckCircle, Clock, Fire, LockSimple, Trophy } from "@/components/icons";
+import { ArrowRight, CaretRight, CheckCircle, Clock, DownloadSimple, Fire, LockSimple, Trophy } from "@/components/icons";
 import { flag } from "@/lib/data";
 import { useGameData } from "@/lib/useGameData";
 import type { MatchView } from "@/lib/adapters";
 import { flagCode, frostToWal, kickoffLabel } from "@/lib/format";
+import { downloadIcs } from "@/lib/ics";
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -45,11 +46,18 @@ export default function MatchdayPage() {
             {open.length} open · {live.length} kicked off · {played.length} settled
           </div>
         </div>
-        {called.size > 0 && (
-          <span style={{ marginLeft: "auto", fontSize: 12, fontWeight: 700, color: "#0A7E40", background: "#E7F6EC", padding: "7px 13px", borderRadius: 20 }}>
-            You&rsquo;re in {called.size} {called.size === 1 ? "match" : "matches"}
-          </span>
-        )}
+        <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 10 }}>
+          {open.length > 0 && (
+            <button onClick={() => downloadIcs(open)} title="Download open fixtures as a calendar file" style={{ display: "flex", alignItems: "center", gap: 6, background: "#fff", border: "1.5px solid #E7ECE3", borderRadius: 11, padding: "8px 13px", fontWeight: 700, fontSize: 12.5, color: "#10231A", cursor: "pointer" }}>
+              <DownloadSimple size={15} weight="bold" color="#0BA14A" /> Add to calendar
+            </button>
+          )}
+          {called.size > 0 && (
+            <span style={{ fontSize: 12, fontWeight: 700, color: "#0A7E40", background: "#E7F6EC", padding: "7px 13px", borderRadius: 20 }}>
+              You&rsquo;re in {called.size} {called.size === 1 ? "match" : "matches"}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* featured (first open) */}
