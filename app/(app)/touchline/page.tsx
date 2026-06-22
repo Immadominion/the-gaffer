@@ -38,7 +38,7 @@ const TOUR: TourStep[] = [
 
 const FALLBACK_ME = {
   handle: "Gaffer", sui: "", seed: "Gaffer", bg: "d9f2e1",
-  rating: 1000, ratingDelta: 0, record: "0–0", rank: 0, tier: "Trialist",
+  rating: 1000, rated: false, ratingDelta: 0, record: "0–0", rank: 0, tier: "Trialist",
   balance: 0, available: 0, staked: 0, form: [] as ("W" | "L")[],
   walWon: 0, hitRate: 0, calls: 0,
 };
@@ -325,20 +325,27 @@ export default function TouchlinePage() {
           <Link href="/dossier" data-tour="form" className="ink" style={{ display: "block", padding: 24, textDecoration: "none" }}>
             <div className="glow" style={{ right: -30, top: -30, width: 140, height: 140, background: "radial-gradient(circle,rgba(20,184,90,.3),transparent 70%)" }} />
             <div style={{ display: "flex", alignItems: "center", gap: 18, position: "relative" }}>
-              <div style={{ width: 96, height: 96, borderRadius: "50%", background: "conic-gradient(#14B85A 0% 68%,rgba(255,255,255,.1) 68% 100%)", display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}>
+              {/* Ring fills with your real hit rate; until your first call settles you're unrated. */}
+              <div style={{ width: 96, height: 96, borderRadius: "50%", background: `conic-gradient(#14B85A 0% ${me.rated ? me.hitRate : 0}%,rgba(255,255,255,.1) ${me.rated ? me.hitRate : 0}% 100%)`, display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}>
                 <div style={{ width: 74, height: 74, borderRadius: "50%", background: "#0E1A14", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                  <span style={{ fontSize: 10, color: "#8FE7B0", fontWeight: 700 }}>RATING</span>
-                  <span className="mono" style={{ fontWeight: 700, fontSize: 20, color: "#fff" }}>{me.rating.toLocaleString()}</span>
+                  <span style={{ fontSize: 10, color: "#8FE7B0", fontWeight: 700 }}>{me.rated ? "RATING" : "UNRATED"}</span>
+                  <span className="mono" style={{ fontWeight: 700, fontSize: me.rated ? 20 : 24, color: "#fff" }}>{me.rated ? me.rating.toLocaleString() : "—"}</span>
                 </div>
               </div>
               <div>
                 <div style={{ fontSize: 12, color: "#8FE7B0", fontWeight: 700, letterSpacing: ".6px" }}>FORM · LAST 5</div>
                 <div style={{ display: "flex", gap: 5, marginTop: 8 }}>
-                  {me.form.map((f, i) => (
-                    <span key={i} style={{ width: 22, height: 22, borderRadius: 7, fontSize: 11, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", ...FORM_STYLE(f === "W") }}>{f}</span>
-                  ))}
+                  {me.form.length > 0 ? (
+                    me.form.map((f, i) => (
+                      <span key={i} style={{ width: 22, height: 22, borderRadius: 7, fontSize: 11, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", ...FORM_STYLE(f === "W") }}>{f}</span>
+                    ))
+                  ) : (
+                    <span style={{ fontSize: 12, color: "#7E8C84", fontWeight: 600 }}>No calls settled yet</span>
+                  )}
                 </div>
-                <div style={{ fontSize: 12, color: "#B8C6BD", fontWeight: 600, marginTop: 10 }}>{me.tier} · #{me.rank}</div>
+                <div style={{ fontSize: 12, color: "#B8C6BD", fontWeight: 600, marginTop: 10 }}>
+                  {me.tier}{me.rated ? ` · #${me.rank}` : " · make your first call"}
+                </div>
               </div>
             </div>
             <div style={{ display: "flex", gap: 10, marginTop: 18, position: "relative" }}>

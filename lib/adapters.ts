@@ -62,6 +62,7 @@ export function toPlayer(d: Dossier, rank = 0): Player {
     seed,
     bg: bgFor(seed),
     rating: Math.round(d.gr),
+    rated: decided > 0, // the rating only means something once a call has settled
     ratingDelta: 0,
     record: `${won}–${lost}`,
     rank,

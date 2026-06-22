@@ -71,7 +71,7 @@ export default function DossierPage() {
           <div className="cd" style={{ fontSize: 20 }}>{me.handle}</div>
           <div className="mono" style={{ fontSize: 12, fontWeight: 600, color: "#8A988F", marginTop: 2 }}>{me.sui}</div>
         </div>
-        <Stat label="RATING" value={me.rating.toLocaleString()} mono />
+        <Stat label={me.rated ? "RATING" : "UNRATED"} value={me.rated ? me.rating.toLocaleString() : "—"} mono />
         <Divider />
         <Stat label="RECORD" value={me.record} mono />
         <Divider />

@@ -61,14 +61,19 @@ export default function WalletPage() {
         <div className="col-main">
           <div className="ink" style={{ padding: 26 }}>
             <div className="glow" style={{ right: -30, top: -30, width: 150, height: 150, background: "radial-gradient(circle,rgba(20,184,90,.3),transparent 70%)" }} />
-            <div className="lbl" style={{ color: "#8FE7B0", position: "relative" }}>TOTAL BALANCE</div>
+            <div className="lbl" style={{ color: "#8FE7B0", position: "relative" }}>AVAILABLE BALANCE</div>
             <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginTop: 8, position: "relative" }}>
-              <span className="mono" style={{ fontWeight: 700, fontSize: 42 }}>{total.toFixed(1)}</span>
+              <span className="mono" style={{ fontWeight: 700, fontSize: 42 }}>{available.toFixed(1)}</span>
               <span style={{ fontSize: 18, fontWeight: 700, color: "#8FE7B0" }}>WAL</span>
             </div>
             <div className="mono" style={{ fontSize: 12, color: "#B8C6BD", marginTop: 3, position: "relative" }}>
               {session.wallet ? shortWallet(session.wallet) : "your Sui wallet"}
             </div>
+            {staked > 0 && (
+              <div className="mono" style={{ fontSize: 11, color: "#B8C6BD", marginTop: 4, position: "relative" }}>
+                {staked.toFixed(1)} WAL staked in open calls — in your portfolio, not spendable here
+              </div>
+            )}
             {session.bonus > 0 && (
               <div className="mono" style={{ fontSize: 11, color: "#8FE7B0", marginTop: 4, position: "relative" }}>
                 incl. {session.bonus.toFixed(1)} starter bonus · play only, not withdrawable
@@ -116,8 +121,8 @@ export default function WalletPage() {
         <div className="col-side w320">
           <div style={{ display: "flex", gap: 14 }}>
             <div className="card" style={{ flex: 1, padding: 18 }}>
-              <div className="lbl">AVAILABLE</div>
-              <div className="mono" style={{ fontWeight: 700, fontSize: 20, marginTop: 5 }}>{available.toFixed(1)}</div>
+              <div className="lbl">TOTAL</div>
+              <div className="mono" style={{ fontWeight: 700, fontSize: 20, marginTop: 5 }}>{total.toFixed(1)}</div>
             </div>
             <div className="card" style={{ flex: 1, padding: 18 }}>
               <div className="lbl">STAKED</div>

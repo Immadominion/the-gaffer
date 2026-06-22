@@ -16,6 +16,7 @@ export type Player = {
   seed: string;
   bg: string;
   rating: number;
+  rated: boolean; // has a settled (won/lost) call yet — until then the rating is just the baseline
   ratingDelta: number;
   record: string;
   rank: number;
@@ -35,6 +36,7 @@ export const me: Player = {
   seed: "Nikitin",
   bg: "d9f2e1",
   rating: 1842,
+  rated: true,
   ratingDelta: 24,
   record: "18–13",
   rank: 7,

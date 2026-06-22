@@ -97,8 +97,8 @@ export default function GafferChatPage() {
             ),
           )}
           {chatM.isPending && (
-            <div style={{ maxWidth: "62%", alignSelf: "flex-start", background: "#0E1A14", color: "#8FE7B0", borderRadius: "18px 18px 18px 5px", padding: "13px 16px", fontSize: 14, fontWeight: 600 }}>
-              …
+            <div style={{ maxWidth: "62%", alignSelf: "flex-start", background: "#0E1A14", borderRadius: "18px 18px 18px 5px", padding: "16px 18px" }} aria-label="The Gaffer is typing">
+              <span className="typing"><span /><span /><span /></span>
             </div>
           )}
         </div>
