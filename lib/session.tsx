@@ -91,7 +91,9 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     withdrawable: dossier ? frostToWal(dossier.balance) : 0,
     bonus: dossier ? frostToWal(dossier.bonus) : 0,
     staked: dossier ? frostToWal(dossier.locked) : 0,
-    onboarded: local.onboarded,
+    // Onboarded if this browser says so OR the account already claimed its grant —
+    // so a cleared cache / new device never re-runs the trial (or re-asks for 2 WAL).
+    onboarded: local.onboarded || !!dossier?.claimedGrant,
     tourDone: local.tourDone,
   };
 

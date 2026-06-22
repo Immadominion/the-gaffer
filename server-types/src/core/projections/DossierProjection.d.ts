@@ -28,6 +28,7 @@ export interface DossierView {
     balance: Frost;
     locked: Frost;
     bonus: Frost;
+    claimedGrant: boolean;
     gr: number;
     tier: Tier;
     nextTier: {
