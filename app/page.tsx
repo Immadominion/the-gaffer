@@ -66,13 +66,15 @@ export default async function LandingPage() {
               Sign the contract
               <ArrowRight size={18} weight="bold" />
             </Link>
-            <Link
-              href="/verdict"
+            <a
+              href="https://youtu.be/dCW31RNfKVU"
+              target="_blank"
+              rel="noopener noreferrer"
               style={{ background: "#fff", color: "#10231A", border: "1.5px solid #DDE4DA", fontWeight: 700, fontSize: 16, padding: "16px 26px", borderRadius: 14, cursor: "pointer", display: "flex", alignItems: "center", gap: 9, textDecoration: "none" }}
             >
               <PlayCircle size={20} weight="fill" color="#0BA14A" />
-              See it work
-            </Link>
+              Watch the demo
+            </a>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 28, marginTop: 36 }}>
             <HeroStat value={potLabel} label="WAL in the Pot" />
