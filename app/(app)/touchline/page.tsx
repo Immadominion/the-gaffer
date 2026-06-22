@@ -117,9 +117,9 @@ export default function TouchlinePage() {
           <div style={{ fontSize: 13, fontWeight: 600, color: "#8A988F" }}>Good evening,</div>
           <div className="cd" style={{ fontSize: 24, lineHeight: 1, color: "#10231A" }}>{handle.toUpperCase()}</div>
         </div>
-        <div className="tl-search" style={{ flex: 1, display: "flex", alignItems: "center", gap: 10, background: "#fff", borderRadius: 30, padding: "12px 18px", boxShadow: "0 2px 8px rgba(16,35,26,.05)", maxWidth: 420 }}>
+        <div className="tl-search" title="Search is coming soon" style={{ flex: 1, display: "flex", alignItems: "center", gap: 10, background: "#fff", borderRadius: 30, padding: "12px 18px", boxShadow: "0 2px 8px rgba(16,35,26,.05)", maxWidth: 420, cursor: "default", opacity: 0.75 }}>
           <MagnifyingGlass size={18} color="#A6B2A9" />
-          <span style={{ fontSize: 14, color: "#A6B2A9", fontWeight: 500 }}>Search fixtures, teams, your calls…</span>
+          <span style={{ fontSize: 14, color: "#A6B2A9", fontWeight: 500 }}>Search fixtures &amp; teams — coming soon</span>
         </div>
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 12 }}>
           <button

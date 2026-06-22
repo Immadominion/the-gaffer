@@ -3,17 +3,31 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { usePrivy } from "@privy-io/react-auth";
 import { SealCheck, SignOut } from "@/components/icons";
-import { avatar, me } from "@/lib/data";
+import { avatar } from "@/lib/data";
 import { useSession } from "@/lib/session";
 
 /* eslint-disable @next/next/no-img-element */
 
 export default function SettingsPage() {
   const { session, signOut } = useSession();
+  const { user } = usePrivy();
   const router = useRouter();
-  const handle = session.handle || me.handle;
-  const wallet = session.wallet || "0x7f3a…d92c";
+  const handle = session.handle || "Manager";
+  const wallet = session.wallet || "";
+  const seed = session.handle || "manager";
+  const method = user?.google
+    ? "Google"
+    : user?.twitter
+      ? "X"
+      : user?.apple
+        ? "Apple"
+        : user?.email
+          ? "email"
+          : user?.wallet
+            ? "your wallet"
+            : "—";
 
   const [notif, setNotif] = useState({ matchday: true, settle: true, ladder: true, mentions: false });
   const [publicDossier, setPublicDossier] = useState(true);
@@ -29,12 +43,12 @@ export default function SettingsPage() {
 
       {/* account */}
       <div className="card" style={{ marginTop: 22, padding: "20px 22px", display: "flex", alignItems: "center", gap: 16 }}>
-        <img src={avatar(me.seed, me.bg)} style={{ width: 60, height: 60, borderRadius: "50%", background: "#d9f2e1", boxShadow: "0 0 0 2px #fff" }} alt="" />
+        <img src={avatar(seed, "d9f2e1")} style={{ width: 60, height: 60, borderRadius: "50%", background: "#d9f2e1", boxShadow: "0 0 0 2px #fff" }} alt="" />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div className="cd" style={{ fontSize: 19 }}>{handle}</div>
-          <div className="mono" style={{ fontSize: 12, fontWeight: 600, color: "#8A988F", marginTop: 2 }}>{wallet.slice(0, 8)}…{wallet.slice(-4)}</div>
+          <div className="mono" style={{ fontSize: 12, fontWeight: 600, color: "#8A988F", marginTop: 2 }}>{wallet ? `${wallet.slice(0, 8)}…${wallet.slice(-4)}` : "—"}</div>
         </div>
-        <span style={{ fontSize: 11, fontWeight: 700, color: "#0A7E40", background: "#E7F6EC", padding: "6px 12px", borderRadius: 20 }}>Connected via email</span>
+        <span style={{ fontSize: 11, fontWeight: 700, color: "#0A7E40", background: "#E7F6EC", padding: "6px 12px", borderRadius: 20 }}>Connected via {method}</span>
       </div>
 
       <Section title="Notifications">
@@ -43,6 +57,9 @@ export default function SettingsPage() {
         <Toggle label="Promotions & demotions" desc="Moving up (or down) the Squad Ladder" on={notif.ladder} set={(v) => setNotif({ ...notif, ladder: v })} />
         <Toggle label="Verdict mentions" desc="When the squad shares a Verdict about you" on={notif.mentions} set={(v) => setNotif({ ...notif, mentions: v })} last />
       </Section>
+      <div style={{ fontSize: 11.5, color: "#A6B2A9", fontWeight: 500, lineHeight: 1.45, margin: "8px 4px 0" }}>
+        These surface in-app (the 🔔 bell on the Touchline). Email &amp; push aren&rsquo;t wired up yet — a one-tap &ldquo;add fixtures to calendar&rdquo; export is the planned way to get real match reminders.
+      </div>
 
       <Section title="Privacy">
         <Toggle label="Public Dossier" desc="Let anyone view the Gaffer's read on you" on={publicDossier} set={setPublicDossier} />

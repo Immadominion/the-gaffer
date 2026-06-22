@@ -165,7 +165,7 @@ export default function TrialPage() {
                 onClick={() => { void claimWelcomeGrant().catch(() => {}); setStep(5); }}
                 style={{ width: "100%", background: "#fff", border: "1.5px solid #E7ECE3", borderRadius: 15, padding: 14, fontWeight: 700, fontSize: 14, color: "#10231A", cursor: "pointer" }}
               >
-                Start with 10 WAL on the house
+                Start with 2 WAL on the house
               </button>
               <p style={{ fontSize: 12, color: "#A6B2A9", textAlign: "center", margin: "4px 0 0" }}>You can top up anytime from your wallet.</p>
             </div>
